@@ -2,7 +2,8 @@
   <div class="goods">
     <div class="menu-wrapper" ref="menuWrapper">
       <ul>
-        <li v-for="item,index in goods" class="menu-item" :class="{'current':currentIndex === index}" @click="selectMenu(index,$event)">
+        <li v-for="item,index in goods" class="menu-item" :class="{'current':currentIndex === index}"
+            @click="selectMenu(index,$event)">
           <span class="text border-1px">
             <span v-show="item.type>0" class="icon" :class="classMap[item.type]"></span>
             {{item.name}}
@@ -31,7 +32,7 @@
                   <span v-show="food.oldPrice" class="old">¥{{food.oldPrice}}</span>
                 </div>
                 <div class="cartcontrol-wrapper">
-                  <cartcontrol :food="food"></cartcontrol>
+                  <cartcontrol :food="food" @event="getEvent"></cartcontrol>
                 </div>
               </div>
             </li>
@@ -39,7 +40,7 @@
         </li>
       </ul>
     </div>
-    <shopcart :select-foods="selectFoods" :delivery-price="seller.deliveryProce" :min-price="seller.minPrice">
+    <shopcart ref="shopcart" :select-foods="selectFoods" :delivery-price="seller.deliveryProce" :min-price="seller.minPrice">
 
     </shopcart>
   </div>
@@ -138,6 +139,12 @@
           height += item.clientHeight
           this.listHeight.push(height)
         }
+      },
+      getEvent (el) {
+        // 体验优化,异步执行下落动画
+        this.$nextTick(() => {
+          this.$refs.shopcart.drop(el)
+        })
       }
     }
   }
@@ -250,7 +257,7 @@
               font-weight 700
           .cartcontrol-wrapper
             position: absolute
-            right:0
-            bottom:12px
+            right: 0
+            bottom: 12px
 
 </style>
