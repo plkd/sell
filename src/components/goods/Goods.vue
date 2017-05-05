@@ -1,54 +1,60 @@
 <template>
-  <div class="goods">
-    <div class="menu-wrapper" ref="menuWrapper">
-      <ul>
-        <li v-for="item,index in goods" class="menu-item" :class="{'current':currentIndex === index}"
-            @click="selectMenu(index,$event)">
+  <div>
+    <div class="goods">
+      <div class="menu-wrapper" ref="menuWrapper">
+        <ul>
+          <li v-for="item,index in goods" class="menu-item" :class="{'current':currentIndex === index}"
+              @click="selectMenu(index,$event)">
           <span class="text border-1px">
             <span v-show="item.type>0" class="icon" :class="classMap[item.type]"></span>
             {{item.name}}
           </span>
-        </li>
-      </ul>
-    </div>
-    <div class="foods-wrapper" ref="foodsWrapper">
-      <ul>
-        <li v-for="item in goods" class="food-list food-list-hook">
-          <h1 class="title">{{item.name}}</h1>
-          <ul>
-            <li v-for="food in item.foods" class="food-item border-1px">
-              <div class="icon">
-                <img :src="food.icon" width="57" height="57">
-              </div>
-              <div class="content">
-                <h2 class="name">{{food.name}}</h2>
-                <p class="description">{{food.description}}</p>
-                <div class="extra">
-                  <span class="count">月售{{food.sellCount}}</span>
-                  <span>好评率{{food.rating}}%</span>
+          </li>
+        </ul>
+      </div>
+      <div class="foods-wrapper" ref="foodsWrapper">
+        <ul>
+          <li v-for="item in goods" class="food-list food-list-hook">
+            <h1 class="title">{{item.name}}</h1>
+            <ul>
+              <li v-for="food in item.foods" class="food-item border-1px" @click="selectFood(food,$event)">
+                <div class="icon">
+                  <img :src="food.icon" width="57" height="57">
                 </div>
-                <div class="price">
-                  <span class="now">¥{{food.price}}</span>
-                  <span v-show="food.oldPrice" class="old">¥{{food.oldPrice}}</span>
+                <div class="content">
+                  <h2 class="name">{{food.name}}</h2>
+                  <p class="description">{{food.description}}</p>
+                  <div class="extra">
+                    <span class="count">月售{{food.sellCount}}</span>
+                    <span>好评率{{food.rating}}%</span>
+                  </div>
+                  <div class="price">
+                    <span class="now">¥{{food.price}}</span>
+                    <span v-show="food.oldPrice" class="old">¥{{food.oldPrice}}</span>
+                  </div>
+                  <div class="cartcontrol-wrapper">
+                    <cartcontrol :food="food" @event="getEvent"></cartcontrol>
+                  </div>
                 </div>
-                <div class="cartcontrol-wrapper">
-                  <cartcontrol :food="food" @event="getEvent"></cartcontrol>
-                </div>
-              </div>
-            </li>
-          </ul>
-        </li>
-      </ul>
-    </div>
-    <shopcart ref="shopcart" :select-foods="selectFoods" :delivery-price="seller.deliveryProce" :min-price="seller.minPrice">
+              </li>
+            </ul>
+          </li>
+        </ul>
+      </div>
+      <shopcart ref="shopcart" :select-foods="selectFoods" :delivery-price="seller.deliveryProce"
+                :min-price="seller.minPrice">
 
-    </shopcart>
+      </shopcart>
+    </div>
+    <food :food="selectedFood" ref="food"></food>
   </div>
+
 </template>
 <script type="text/ecmascript-6">
   import BScroll from 'better-scroll'
   import shopcart from '../shopcart/shopcart'
   import cartcontrol from '../cartcontrol/cartcontrol'
+  import food from '../food/food'
   const ERROR_OK = 0
 
   export default {
@@ -59,7 +65,8 @@
     },
     components: {
       shopcart,
-      cartcontrol
+      cartcontrol,
+      food
     },
     data () {
       return {
@@ -145,6 +152,14 @@
         this.$nextTick(() => {
           this.$refs.shopcart.drop(el)
         })
+      },
+      selectFood (food, event) {
+        // 自己开发的event._constructed是为true,pc浏览器没有此事件
+        if (!event._constructed) {
+          return
+        }
+        this.selectedFood = food
+        this.$refs.food.show()
       }
     }
   }
