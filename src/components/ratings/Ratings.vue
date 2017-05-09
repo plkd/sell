@@ -31,15 +31,24 @@
         <ul>
           <li v-for="rating in ratings" class="rating-item border-1px"
               v-show="needShow(rating.rateType, rating.text)">
-            <div class="user">
-              <span class="name">{{rating.username}}</span>
-              <img :src="rating.avatar" class="avatar" width="12" height="12" alt="avatar">
+            <div class="avatar">
+              <img :src="rating.avatar" alt="" width="28" height="28" class="avatar">
             </div>
-            <div class="time">{{rating.rateTime | formatDate}}</div>
-            <p class="text">
-                  <span
-                    :class="{'icon-thumb_up':rating.rateType===0,'icon-thumb_down':rating.rateType===1}"></span>{{rating.text}}
-            </p>
+            <div class="content">
+              <span class="name">{{rating.username}}</span>
+              <div class="star-wrapper">
+                <star :size="24" :score="rating.score"></star>
+                <span class="delivery" v-show="rating.deliveryTime">{{rating.deliveryTime}}</span>
+              </div>
+              <p class="text">{{rating.text}}</p>
+              <div class="recommend" v-show="rating.recommend && rating.recommend.length">
+                <span class="icon-thumb_up"></span>
+                <span class="item" v-for="item in rating.recommend">{{item}}</span>
+              </div>
+              <div class="time">
+                {{rating.rateTime | formatDate}}
+              </div>
+            </div>
           </li>
         </ul>
         <div class="no-rating" v-show="!ratings || !ratings.length">
@@ -187,46 +196,65 @@
             font-size: 12px
             color: rgb(147, 153, 159)
 
-
     .rating-wrapper
+      position: relative
       padding: 0 18px
       .rating-item
-        position: relative
-        padding: 16px 0
-        border-1px(rgba(7, 17, 27.0 .1))
-        .user
-          position: absolute
-          right: 0
-          top: 16px
-          line-height: 12px
-          font-size 0
+        display: flex
+        padding: 18px 0
+        border-1px(rgba(7, 17, 27, 0.1))
+        .avatar
+          flex: 0 0 28px
+          width: 28px
+          margin-right 12px
+          border-radius 50%
+        .content
+          position: relative
+          flex: 1
           .name
-            display: inline-block
-            margin-right 6px
+            margin-bottom: 4px
+            line-height: 12px
+            font-size: 10px
+            color: rgb(7, 17, 27)
+          .star-wrapper
+            margin-bottom 6px
+            font-size 0
+            .star
+              display: inline-block
+              margin-right: 6px
+              vertical-align: top
+            .delivery
+              display: inline-block
+              vertical-align: top
+              line-height: 12px
+              font-size: 10px
+              color: rgb(147, 153, 159)
+          .text
+            margin-bottom: 8px
+            line-height: 18px
+            color: rgb(7, 17, 27)
+            font-size: 12px
+          .recommend
+            line-height: 16px
+            font-size: 0
+            .icon-thumb_up, .item
+              display: inline-block
+              margin: 0 8px 4px 0
+              font-size: 9px
+            .icon-thumb_up
+              color: rgb(0, 160, 220)
+            .item
+              padding: 0 6px
+              border: 1px solid rgba(7, 17, 27, 0.1)
+              border-radius: 1px
+              color: rgb(147, 153, 159)
+              background: #fff
+          .time
+            position: absolute
+            right: 0
+            top: 0
             font-size 10px
-            vertical-align: top
+            font-weight 200
             color: rgb(147, 153, 159)
-          .avatar
-            border-radius: 50%
-        .time
-          margin-bottom 6px
-          line-height: 12px
-          font-size 10px
-          color: rgb(147, 153, 159)
-        .text
-          font-size 12px
-          color: rgb(7, 17, 27)
-          line-height 16px
-          .icon-thumb_up, .icon-thumb_down
-            font-size 12px
-            margin-right: 4px
-            line-height 16px
-          .icon-thumb_up
-            color: rgb(0, 160, 220)
-          .icon-thumb_down
-            color: rgb(147, 153, 159)
-    .no-rating
-      padding: 16px 0
-      font-size: 12px
-      color: rgb(147, 153, 159)
+            line-height 12px
 </style>
