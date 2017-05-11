@@ -29,7 +29,7 @@
           this.food.count++
         }
 //        this.$dispatch('cart.add', event.target)
-//        this.$bus.emit('add', event.target)
+        this.$bus.emit('add', event.target)
         this.$emit('event', event.target)
       },
       decreaseCart (event) {

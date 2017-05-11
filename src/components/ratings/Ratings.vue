@@ -42,7 +42,7 @@
               </div>
               <p class="text">{{rating.text}}</p>
               <div class="recommend" v-show="rating.recommend && rating.recommend.length">
-                <span class="icon-thumb_up"></span>
+                <span :class="{'icon-thumb_up':rating.rateType===0,'icon-thumb_down':rating.rateType===1}"></span>
                 <span class="item" v-for="item in rating.recommend">{{item}}</span>
               </div>
               <div class="time">
@@ -149,6 +149,9 @@
         padding: 6px 0
         text-align center
         border-right 1px solid rgba(7, 17, 27, 0.1)
+        @media only screen and (max-width: 320px)
+          flex: 0 0 120px
+          width: 120px
         .score
           font-size 24px
           color: rgb(255, 153, 0)
@@ -195,7 +198,6 @@
             margin-left: 12px
             font-size: 12px
             color: rgb(147, 153, 159)
-
     .rating-wrapper
       position: relative
       padding: 0 18px
@@ -237,12 +239,14 @@
           .recommend
             line-height: 16px
             font-size: 0
-            .icon-thumb_up, .item
+            .icon-thumb_up, .icon-thumb_down, .item
               display: inline-block
               margin: 0 8px 4px 0
               font-size: 9px
             .icon-thumb_up
               color: rgb(0, 160, 220)
+            .icon-thumb_down
+              color: rgb(147, 153, 159)
             .item
               padding: 0 6px
               border: 1px solid rgba(7, 17, 27, 0.1)
