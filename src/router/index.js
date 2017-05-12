@@ -6,23 +6,24 @@ import Seller from '@/components/seller/Seller'
 
 Vue.use(Router)
 
+let routes = [
+  {
+    path: '/goods',
+    name: 'Goods',
+    component: Goods
+  },
+  {
+    path: '/ratings',
+    name: 'Ratings',
+    component: Ratings
+  },
+  {
+    path: '/seller',
+    name: 'Seller',
+    component: Seller
+  }
+]
 export default new Router({
-  routes: [
-    {
-      path: '/goods',
-      name: 'Goods',
-      component: Goods
-    },
-    {
-      path: '/ratings',
-      name: 'Ratings',
-      component: Ratings
-    },
-    {
-      path: '/seller',
-      name: 'Seller',
-      component: Seller
-    }
-  ]
+  routes: routes
 })
 

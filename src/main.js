@@ -13,11 +13,14 @@ Vue.use(VueBus)
 Vue.config.productionTip = false
 
 /* eslint-disable no-new */
-new Vue({
+
+let vue = new Vue({
   router,
   VueResource,
   template: '<App/>',
-  components: { App }
-}).$mount('#app')
+  components: {App}
+})
+
+vue.$mount('#app')
 
 // router.push('goods')

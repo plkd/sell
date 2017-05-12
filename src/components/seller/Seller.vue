@@ -137,8 +137,8 @@
           this.$nextTick(() => {
             if (!this.picScroll) {
               this.picScroll = new BScroll(this.$refs.picWrapper, {
-                scrollX: true,
-                eventPassthrough: 'vertical'
+                scrollX: true,  // 横向滚动
+                eventPassthrough: 'vertical'   // 竖直方向滚动时忽略垂直方向滚动
               })
             } else {
               this.picScroll.refresh()
@@ -276,7 +276,6 @@
             height: 90px
             &:last-child
               margin 0
-
     .info
       padding: 18px
       color: rgb(7, 17, 27)
